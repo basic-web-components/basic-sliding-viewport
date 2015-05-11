@@ -26,7 +26,7 @@ basic-sliding-viewport-fit.
     will-change: transform;
   }
 
-  :host(.snapTransition) #slidingContainer {
+  :host(.showTransition) #slidingContainer {
     -webkit-transition: -webkit-transform 0.2s ease-out;
     transition: transform 0.2s ease-out;
   }
@@ -39,7 +39,9 @@ basic-sliding-viewport-fit.
 </dom-module>
 
 <script>
-Polymer(mixin(BasicAspectMixin, {
+Polymer({
+
+  behaviors: [Basic.Aspect],
 
   contribute: {
 
@@ -68,12 +70,8 @@ Polymer(mixin(BasicAspectMixin, {
       this.render();
     },
 
-    touchEnd: function() {
-      this.classList.add('snapTransition');
-    },
-
-    touchStart: function() {
-      this.classList.remove('snapTransition');
+    showTransition: function(show) {
+      this.classList.toggle('showTransition', show);
     }
 
   },
@@ -81,7 +79,7 @@ Polymer(mixin(BasicAspectMixin, {
   is: 'basic-sliding-viewport',
 
   ready: function() {
-    this.classList.add('snapTransition');
+    this.classList.add('showTransition');
   },
 
   render: function() {
@@ -108,7 +106,7 @@ Polymer(mixin(BasicAspectMixin, {
     if (index === 0 && position < 0) {
       // Apply tension from the left edge.
       dampenedPosition = -this._damping(-position);
-    } else if (index === this.count - 1 && position > 0) {
+    } else if (index === count - 1 && position > 0) {
       // Apply tension from the right edge.
       dampenedPosition = this._damping(position);
     } else {
@@ -147,5 +145,5 @@ Polymer(mixin(BasicAspectMixin, {
 
   _position: 0
 
-}));
+});
 </script>
